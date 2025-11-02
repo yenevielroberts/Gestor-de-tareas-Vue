@@ -48,13 +48,21 @@ const agregarTarea=()=>{
   </div>
 
   <div v-else>
-      <div v-for="tarea in tareas" :key="tarea.id">
-        <p>{{ tarea.nombre }}</p>
-        <button>Completar</button>
+      <div class="containerTareas" v-for="tarea in tareas" :key="tarea.id" >
+        <p class="nombreTarea">{{ tarea.nombre }}</p>
+        <button class="btns">Completar</button>
         <button>Eliminar</button>
       </div>
   </div>
  
 </template>
 
-<style scoped></style>
+<style scoped>
+
+.containerTareas{
+
+  display: flex;
+  flex-direction: row;
+  margin-left: 10px;
+}
+</style>
