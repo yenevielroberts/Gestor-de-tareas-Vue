@@ -21,7 +21,7 @@ const agregarTarea=()=>{
       })
 
       tareas.value.push(nuevaTarea)
-      nomTarea.value=''
+      nomTarea.value=''//reasigno el valor del nombre
 }
 
 </script>
@@ -29,24 +29,23 @@ const agregarTarea=()=>{
 <template>
   <h1>Gestor de tareas</h1>
 
-  <p>{{ nomTarea }}</p>
   <input v-model="nomTarea" type="text" placeholder="Escribe una nueva tarea"/>
   <button @click="agregarTarea">Agregar</button>
   <br></br>
-  <label for="checkBoxPendiente">Mostras solo las pendites</label>
+  <label for="checkBoxPendiente">Mostras  pendientes</label>
   <input v-model="checkbox" type="checkbox" name="checkBoxPendiente" id="checkBoxPendiente"/>
 
 <!--Pendientes-->
   <div v-if="checkbox">
      <div v-for="tarea in tareas" :key="tarea.id">
-        <div v-if="!tarea.completado">
+        <div v-if="!tarea.completado" class="containerTareas">
           <p>{{ tarea.nombre }}</p>
           <button>Completar</button>
           <button>Eliminar</button>
         </div>
     </div>
   </div>
-
+  <!--Muestra todas-->
   <div v-else>
       <div class="containerTareas" v-for="tarea in tareas" :key="tarea.id" >
         <p class="nombreTarea">{{ tarea.nombre }}</p>
@@ -64,5 +63,15 @@ const agregarTarea=()=>{
   display: flex;
   flex-direction: row;
   margin-left: 10px;
+  align-items: center;
+}
+
+button{
+
+  margin:5px;
+  padding:5px;
+  height: fit-content;
+  border-radius: 5px;
+  border: 0px;
 }
 </style>
