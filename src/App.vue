@@ -60,17 +60,20 @@ const desmarcar=(id)=>{
      <div v-for="tarea in tareas" :key="tarea.id">
         <div v-if="!tarea.completado" class="containerTareas">
           <p>{{ tarea.nombre }}</p>
+          <!--Solo se mostrará el boton de completar si el valor de completado es false-->
           <button class="btns" v-show="!tarea.completado" @click="completar(tarea.id)">Completar</button>
           <button>Eliminar</button>
         </div>
     </div>
   </div>
-  <!--Muestra todas-->
+  <!--Muestra todas las tareas-->
   <div v-else>
       <div class="containerTareas" v-for="tarea in tareas" :key="tarea.id" >
         <!--Se aplicara la clase complatada si el valor de completado es true-->
         <p :class="{completada: tarea.completado}">{{ tarea.nombre }}</p>
+        <!--Solo se mostrará el boton de descarmar si el valor de completado es true-->
         <button v-show="tarea.completado" @click="desmarcar(tarea.id)"> Desmarcar</button>
+         <!--Solo se mostrará el boton de completar si el valor de completado es false-->
         <button class="btns" v-show="!tarea.completado" @click="completar(tarea.id)">Completar</button>
         <button>Eliminar</button>
       </div>
