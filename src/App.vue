@@ -24,12 +24,32 @@ const agregarTarea=()=>{
       nomTarea.value=''//reasigno el valor del nombre
 }
 
+const completar=(id)=>{
+
+  const tareaModificar =tareas.value.find(tarea=> tarea.id===id );
+
+  if(tareaModificar){
+    tareaModificar.completado=true;
+  }
+
+}
+
+const desmarcar=(id)=>{
+
+  const tareaModificar =tareas.value.find(tarea=> tarea.id===id );
+
+  if(tareaModificar){
+    tareaModificar.completado=false;
+  }
+
+}
+
 </script>
 
 <template>
   <h1>Gestor de tareas</h1>
 
-  <input v-model="nomTarea" type="text" placeholder="Escribe una nueva tarea"/>
+  <input v-model="nomTarea" type="text" id="nomTarea" name="nomTarea" placeholder="Escribe una nueva tarea"/>
   <button @click="agregarTarea">Agregar</button>
   <br></br>
   <label for="checkBoxPendiente">Mostras  pendientes</label>
@@ -40,7 +60,7 @@ const agregarTarea=()=>{
      <div v-for="tarea in tareas" :key="tarea.id">
         <div v-if="!tarea.completado" class="containerTareas">
           <p>{{ tarea.nombre }}</p>
-          <button>Completar</button>
+          <button class="btns" v-show="!tarea.completado" @click="completar(tarea.id)">Completar</button>
           <button>Eliminar</button>
         </div>
     </div>
@@ -48,8 +68,10 @@ const agregarTarea=()=>{
   <!--Muestra todas-->
   <div v-else>
       <div class="containerTareas" v-for="tarea in tareas" :key="tarea.id" >
-        <p class="nombreTarea">{{ tarea.nombre }}</p>
-        <button class="btns">Completar</button>
+        <!--Se aplicara la clase complatada si el valor de completado es true-->
+        <p :class="{completada: tarea.completado}">{{ tarea.nombre }}</p>
+        <button v-show="tarea.completado" @click="desmarcar(tarea.id)"> Desmarcar</button>
+        <button class="btns" v-show="!tarea.completado" @click="completar(tarea.id)">Completar</button>
         <button>Eliminar</button>
       </div>
   </div>
@@ -73,5 +95,9 @@ button{
   height: fit-content;
   border-radius: 5px;
   border: 0px;
+}
+
+.completada{
+  text-decoration-line: line-through;
 }
 </style>
