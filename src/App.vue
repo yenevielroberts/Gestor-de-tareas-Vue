@@ -81,65 +81,117 @@ const totalPendientes=computed(()=>{
 </script>
 
 <template>
+<div id="container">
   <h1>Gestor de tareas</h1>
 
-  <input v-model="nomTarea" type="text" id="nomTarea" name="nomTarea" placeholder="Escribe una nueva tarea"/>
-  <button @click="agregarTarea">Agregar</button>
-  <br></br>
-  <label for="checkBoxPendiente">Mostras  pendientes</label>
-  <input v-model="checkbox" type="checkbox" name="checkBoxPendiente" id="checkBoxPendiente"/>
-
+  <section class="sectionAgregarTarea">
+    <input v-model="nomTarea" type="text" id="nomTarea" name="nomTarea" placeholder="Escribe una nueva tarea"/>
+    <button id="btnAgregar" @click="agregarTarea">Agregar</button>
+    <br></br>
+    <label for="checkBoxPendiente">Mostras  pendientes</label>
+    <input v-model="checkbox" type="checkbox" name="checkBoxPendiente" id="checkBoxPendiente"/>
+ </section>
 <!--Pendientes-->
-  <div v-if="checkbox">
+  <section class="listaTareas" v-if="checkbox">
      <div v-for="tarea in tareas" :key="tarea.id">
         <div v-if="!tarea.completado" class="containerTareas">
           <p>{{ tarea.nombre }}</p>
           <!--Solo se mostrará el boton de completar si el valor de completado es false-->
-          <button class="btns" v-show="!tarea.completado" @click="completar(tarea.id)">Completar</button>
-          <button @click="eliminar(tarea.id)">Eliminar</button>
+          <button class="btnsCompletar" v-show="!tarea.completado" @click="completar(tarea.id)">Completar</button>
+          <button class="btnsEliminar" @click="eliminar(tarea.id)">Eliminar</button>
         </div>
     </div>
-  </div>
+  </section>
   <!--Muestra todas las tareas-->
-  <div v-else>
+  <section class="listaTareas" v-else>
       <div class="containerTareas" v-for="tarea in tareas" :key="tarea.id" >
         <!--Se aplicara la clase complatada si el valor de completado es true-->
         <p :class="{completada: tarea.completado}">{{ tarea.nombre }}</p>
         <!--Solo se mostrará el boton de descarmar si el valor de completado es true-->
         <button v-show="tarea.completado" @click="desmarcar(tarea.id)"> Desmarcar</button>
          <!--Solo se mostrará el boton de completar si el valor de completado es false-->
-        <button class="btns" v-show="!tarea.completado" @click="completar(tarea.id)">Completar</button>
-        <button @click="eliminar(tarea.id)" >Eliminar</button>
+        <button class="btnsCompletar" v-show="!tarea.completado" @click="completar(tarea.id)">Completar</button>
+        <button class="btnsEliminar" @click="eliminar(tarea.id)" >Eliminar</button>
       </div>
-  </div>
+  </section>
  <div class="informe">
   <p>Total: {{ totalTareas }} |</p>
   <p>Pendientes {{ totalPendientes }}</p>
  </div>
+
+</div>
 </template>
 
 <style scoped>
 
+#container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/**Sesion pra agregar tareas */
+
+input[type='text']{
+
+  border-radius: 10px;
+  width: 200px;
+  height: 20px;
+  margin-bottom: 50px;
+}
+
+#btnAgregar{
+  border-radius: 10px;
+  background-color: #228B22;
+  padding:5x;
+}
+
+#btnAgregar:hover{
+  color: white;
+}
+
+/**Contenedor individual de las tareas */
 .containerTareas{
 
   display: flex;
   flex-direction: row;
-  margin-left: 10px;
+  padding: 5px;
+  margin: 10px;
   align-items: center;
+  border-radius: 10px;
+  background-color: #008B8B;
+  color:white;
+  font-weight: 600;
 }
 
+/**Botones */
 button{
 
   margin:5px;
   padding:5px;
   height: fit-content;
-  border-radius: 5px;
-  border: 0px;
+  background-color: transparent;
+  border: none;
+  font-weight: 700;
 }
+
+.btnsEliminar:hover{
+  font-weight: 700;
+  color:red;
+}
+
+.btnsCompletar:hover{
+
+  font-weight: 700;
+  color:greenyellow;
+}
+
 
 .completada{
   text-decoration-line: line-through;
 }
+
 
 .informe{
   display: flex;
