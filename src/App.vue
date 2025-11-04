@@ -1,5 +1,5 @@
 <script setup>
-import {ref, reactive} from 'vue'
+import {ref, reactive, computed} from 'vue'
 
 const nomTarea=ref('');
 const checkbox=ref(false);
@@ -10,20 +10,23 @@ const tareas=ref([
   {id:2, nombre:'Aprender React', completado:true}
 ])
 
+//Función para agregar nuevas tareas
 const agregarTarea=()=>{
 
     //Si la variable nomTarea tiene un valor la agrego la tarea
     if(!nomTarea.value) return 
 
       const nuevaTarea=reactive({
-        id:tareas.length+1,
-        nombre:nomTarea.value
+        id:tareas.value.length+1,
+        nombre:nomTarea.value,
+        completado:false
       })
 
       tareas.value.push(nuevaTarea)
       nomTarea.value=''//reasigno el valor del nombre
 }
 
+//Función para marcar las tareas como completadas
 const completar=(id)=>{
 
   const tareaModificar =tareas.value.find(tarea=> tarea.id===id );
@@ -34,6 +37,7 @@ const completar=(id)=>{
 
 }
 
+//Función para desmarcar las tareas ya completadas
 const desmarcar=(id)=>{
 
   const tareaModificar =tareas.value.find(tarea=> tarea.id===id );
@@ -44,6 +48,7 @@ const desmarcar=(id)=>{
 
 }
 
+//Función para eliminar las tareas
 const eliminar=(id)=>{
 
   const tareaIndex=tareas.value.findIndex( tarea=>tarea.id===id);
@@ -52,6 +57,26 @@ const eliminar=(id)=>{
     tareas.value.splice(tareaIndex,1);
   }
 }
+
+const totalTareas=computed(()=> {
+  const cantidadTareas=tareas.value.length
+  return cantidadTareas
+
+})
+
+const totalPendientes=computed(()=>{
+
+  let tareasPendiente=0
+
+  for(let tarea of tareas.value){
+
+    if(!tarea.completado){
+      tareasPendiente++
+    }
+  }
+
+  return tareasPendiente
+})
 
 </script>
 
@@ -87,7 +112,10 @@ const eliminar=(id)=>{
         <button @click="eliminar(tarea.id)" >Eliminar</button>
       </div>
   </div>
- 
+ <div class="informe">
+  <p>Total: {{ totalTareas }} |</p>
+  <p>Pendientes {{ totalPendientes }}</p>
+ </div>
 </template>
 
 <style scoped>
@@ -111,5 +139,15 @@ button{
 
 .completada{
   text-decoration-line: line-through;
+}
+
+.informe{
+  display: flex;
+  flex-direction: row;
+}
+
+.informe p{
+  margin-right: 5px;
+  font-weight: bold;
 }
 </style>
