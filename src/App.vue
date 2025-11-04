@@ -44,6 +44,15 @@ const desmarcar=(id)=>{
 
 }
 
+const eliminar=(id)=>{
+
+  const tareaIndex=tareas.value.findIndex( tarea=>tarea.id===id);
+
+  if(tareaIndex != -1){
+    tareas.value.splice(tareaIndex,1);
+  }
+}
+
 </script>
 
 <template>
@@ -62,7 +71,7 @@ const desmarcar=(id)=>{
           <p>{{ tarea.nombre }}</p>
           <!--Solo se mostrará el boton de completar si el valor de completado es false-->
           <button class="btns" v-show="!tarea.completado" @click="completar(tarea.id)">Completar</button>
-          <button>Eliminar</button>
+          <button @click="eliminar(tarea.id)">Eliminar</button>
         </div>
     </div>
   </div>
@@ -75,7 +84,7 @@ const desmarcar=(id)=>{
         <button v-show="tarea.completado" @click="desmarcar(tarea.id)"> Desmarcar</button>
          <!--Solo se mostrará el boton de completar si el valor de completado es false-->
         <button class="btns" v-show="!tarea.completado" @click="completar(tarea.id)">Completar</button>
-        <button>Eliminar</button>
+        <button @click="eliminar(tarea.id)" >Eliminar</button>
       </div>
   </div>
  
